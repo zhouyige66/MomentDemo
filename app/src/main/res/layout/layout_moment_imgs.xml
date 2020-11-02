@@ -21,7 +21,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#cbcbca"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:transitionName="share_img" />
 
             <ImageView
                 android:id="@+id/iv_2"
@@ -31,7 +32,8 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="#cbcbca"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:transitionName="share_img" />
 
             <ImageView
                 android:id="@+id/iv_3"
@@ -39,7 +41,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#cbcbca"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:transitionName="share_img" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,7 +58,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#cbcbca"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:transitionName="share_img" />
 
             <ImageView
                 android:id="@+id/iv_5"
@@ -65,7 +69,8 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="#cbcbca"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:transitionName="share_img" />
 
             <ImageView
                 android:id="@+id/iv_6"
@@ -73,7 +78,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#cbcbca"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:transitionName="share_img" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,7 +95,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#cbcbca"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:transitionName="share_img" />
 
             <ImageView
                 android:id="@+id/iv_8"
@@ -99,7 +106,8 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="#cbcbca"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:transitionName="share_img" />
 
             <ImageView
                 android:id="@+id/iv_9"
@@ -107,7 +115,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#cbcbca"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:transitionName="share_img" />
         </LinearLayout>
     </LinearLayout>
 
@@ -119,5 +128,6 @@
         android:maxWidth="240dp"
         android:maxHeight="300dp"
         android:scaleType="fitCenter"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        android:transitionName="share_img" />
 </FrameLayout>

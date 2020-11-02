@@ -1,14 +1,24 @@
 package cn.roy.demo.adapter;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.app.ActivityOptionsCompat;
 
 import com.bumptech.glide.Glide;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -16,6 +26,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
+import cn.roy.demo.ImgDetailActivity;
 import cn.roy.demo.MainActivity;
 import cn.roy.demo.R;
 import cn.roy.demo.model.ChatMoment;
@@ -44,12 +55,7 @@ public class MomentAdapter extends CommonAdapter<ChatMoment> {
         }
         View vg_img_container = viewHolder.getView(R.id.vg_img_container);
         List<ChatMoment.ImagesBean> images = chatMoment.getImages();
-        if (images == null || images.size() == 0) {
-            vg_img_container.setVisibility(View.GONE);
-        } else {
-            vg_img_container.setVisibility(View.VISIBLE);
-            displayImages(vg_img_container, images);
-        }
+        displayImages(vg_img_container, images);
 
         View vg_action = viewHolder.getView(R.id.vg_action);
         viewHolder.getView(R.id.iv_action).setOnClickListener(new View.OnClickListener() {
@@ -72,18 +78,26 @@ public class MomentAdapter extends CommonAdapter<ChatMoment> {
                 valueAnimator.start();
             }
         });
-        View vg_comment_container = viewHolder.getView(R.id.vg_comment_container);
+        ViewGroup vg_comment_container = viewHolder.getView(R.id.vg_comment_container);
+        List<ChatMoment.CommentsBean> comments = chatMoment.getComments();
+        displayComments(vg_comment_container, comments);
     }
 
     private void displayImages(View containerView, List<ChatMoment.ImagesBean> images) {
+        if (images == null || images.size() == 0) {
+            containerView.setVisibility(View.GONE);
+            return;
+        }
+
+        containerView.setVisibility(View.VISIBLE);
         int size = images.size();
         if (size == 1) {
             containerView.findViewById(R.id.vg_img_mul).setVisibility(View.GONE);
             containerView.findViewById(R.id.iv_img_single).setVisibility(View.VISIBLE);
             ImageView iv_single = containerView.findViewById(R.id.iv_img_single);
             iv_single.setVisibility(View.VISIBLE);
-            Glide.with(mContext).load(images.get(0).getUrl())
-                    .into(iv_single);
+            configImageView(iv_single, images.get(0).getUrl());
+
         } else {
             containerView.findViewById(R.id.vg_img_mul).setVisibility(View.VISIBLE);
             containerView.findViewById(R.id.iv_img_single).setVisibility(View.GONE);
@@ -107,13 +121,28 @@ public class MomentAdapter extends CommonAdapter<ChatMoment> {
                 ImageView iv = containerView.findViewById(getIdByIdentify((i + 1)));
                 if (i < images.size()) {
                     iv.setVisibility(View.VISIBLE);
-                    Glide.with(mContext).load(images.get(i).getUrl())
-                            .into(iv);
+                    String url = images.get(i).getUrl();
+                    configImageView(iv, url);
                 } else {
                     iv.setVisibility(View.INVISIBLE);
                 }
             }
         }
+    }
+
+    private void configImageView(ImageView iv, String url) {
+        iv.setTag(url);
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ImgDetailActivity.class);
+                intent.putExtra("url", (String) v.getTag());
+                Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        (Activity) mContext, v, "share_img").toBundle();
+                mContext.startActivity(intent, bundle);
+            }
+        });
+        Glide.with(mContext).load(url).into(iv);
     }
 
     private int getIdByIdentify(int index) {
@@ -125,4 +154,28 @@ public class MomentAdapter extends CommonAdapter<ChatMoment> {
         return viewId;
     }
 
+    private void displayComments(ViewGroup containerView, List<ChatMoment.CommentsBean> comments) {
+        containerView.setVisibility(View.VISIBLE);
+        containerView.removeAllViews();
+        if (comments == null || comments.size() == 0) {
+            return;
+        }
+        for (ChatMoment.CommentsBean bean : comments) {
+            String nick = bean.getSender().getNick();
+            SpannableString spannableString = new SpannableString(
+                    nick + ":" + bean.getContent());
+            ForegroundColorSpan colorSpan1 = new ForegroundColorSpan(Color.parseColor("#009ad6"));
+            spannableString.setSpan(colorSpan1, 0, nick.length() + 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            ForegroundColorSpan colorSpan2 = new ForegroundColorSpan(Color.parseColor("#555555"));
+            spannableString.setSpan(colorSpan2, nick.length() + 1, spannableString.length() - 1,
+                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            TextView tv = new TextView(mContext);
+            tv.setTextSize(16);
+            tv.setText(spannableString);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            tv.setLayoutParams(layoutParams);
+            containerView.addView(tv);
+        }
+    }
 }

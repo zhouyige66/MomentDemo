@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".ImgDetailActivity"/>
         <service
             android:name=".service.DataDealService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
